@@ -1,4 +1,4 @@
-// File: src/components/layout/Header.jsx
+// src/components/layout/Header.jsx
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
@@ -11,9 +11,9 @@ const NAV = [
 export default function Header() {
   const router = useRouter()
   const [active, setActive] = useState('')
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    // if on a dedicated page (like /booking), mark appropriately
     if (router.pathname === '/booking') {
       setActive('booking')
       return
@@ -24,7 +24,6 @@ export default function Header() {
 
     const observer = new IntersectionObserver(
       entries => {
-        // pick the section with highest intersection ratio
         let best = { id: null, ratio: 0 }
         for (const e of entries) {
           const id = e.target.id
@@ -44,35 +43,73 @@ export default function Header() {
     const el = document.getElementById(id)
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      // small focus for keyboard users
       el.setAttribute('tabindex', '-1')
       el.focus({ preventScroll: true })
       window.history.replaceState(null, '', `#${id}`)
     } else {
-      // fallback to a route (e.g., booking page)
       if (id === 'booking') router.push('/booking')
     }
   }
 
   return (
-    <header className="bg-white shadow-sm py-4 sticky top-0 z-40">
-      <div className="container mx-auto px-6 flex items-center justify-between">
+    <header className="bg-white shadow-sm py-3 sticky top-0 z-50">
+      <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="font-bold">BoutiqueBeach</div>
 
-        <nav className="space-x-4 text-sm" aria-label="Primary">
+        {/* Desktop nav (hidden on small screens) */}
+        <nav className="hidden sm:flex items-center space-x-3 text-sm" aria-label="Primary">
           {NAV.map(item => (
             <a
               key={item.id}
               href={`#${item.id}`}
               onClick={e => handleClick(e, item.id)}
-              className={`inline-block px-3 py-2 rounded transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-300 ${active === item.id ? 'bg-amber-200 font-semibold text-black' : 'text-gray-700 hover:text-black hover:bg-amber-50'}` }
+              className={`inline-block px-3 py-2 rounded transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-300 ${
+                active === item.id ? 'bg-amber-200 font-semibold text-black' : 'text-gray-700 hover:text-black hover:bg-amber-50'
+              }`}
               aria-current={active === item.id ? 'page' : undefined}
             >
               {item.label}
             </a>
           ))}
         </nav>
+
+        {/* Mobile hamburger */}
+        <div className="sm:hidden flex items-center">
+          <button
+            onClick={() => setOpen(v => !v)}
+            aria-expanded={open}
+            aria-label="Toggle menu"
+            className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-300"
+          >
+            <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="block">
+              <rect y="0" width="22" height="2" rx="1" className="fill-black" />
+              <rect y="8" width="22" height="2" rx="1" className="fill-black" />
+              <rect y="16" width="22" height="2" rx="1" className="fill-black" />
+            </svg>
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu: simple stacked links */}
+      {open && (
+        <div className="sm:hidden bg-white border-t">
+          <div className="px-4 py-3 flex flex-col">
+            {NAV.map(item => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={e => {
+                  handleClick(e, item.id)
+                  setOpen(false)
+                }}
+                className={`py-3 ${active === item.id ? 'bg-amber-50 font-semibold' : 'text-gray-700'} block`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   )
 }
