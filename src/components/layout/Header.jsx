@@ -54,7 +54,17 @@ export default function Header() {
   return (
     <header className="bg-white shadow-sm py-3 sticky top-0 z-50">
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <div className="font-bold">BoutiqueBeach</div>
+        {/* Logo + Site name */}
+        <a href="/" className="flex items-center gap-3">
+          <img
+            src="/images/logo.png"
+            alt="BoutiqueBeach logo"
+            className="w-8 h-8 rounded-md object-cover"
+            width={32}
+            height={32}
+          />
+          <span className="font-bold text-lg tracking-tight">BoutiqueBeach</span>
+        </a>
 
         {/* Desktop nav (hidden on small screens) */}
         <nav className="hidden sm:flex items-center space-x-3 text-sm" aria-label="Primary">
