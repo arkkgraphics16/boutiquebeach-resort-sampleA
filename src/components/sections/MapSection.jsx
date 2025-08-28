@@ -3,7 +3,7 @@ export default function MapSection() {
     <section id="map" className="bg-white p-4 rounded">
       <h3 className="font-semibold mb-2">Location</h3>
       <img 
-        src="/images/map-thumbnail.jpg" 
+        src="/images/placeholders/map-thumbnail.jpg" 
         alt="Island top view" 
         className="w-full h-64 object-cover rounded"
       />
