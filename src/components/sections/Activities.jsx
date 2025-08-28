@@ -8,7 +8,7 @@ export default function Activities() {
           Island Hopping — <a href="#">WhatsApp</a>
         </div>
         <div className="p-3 border rounded">
-          <img src="/images//placeholders/activity-dive.jpg" alt="Diving" className="w-full h-40 object-cover rounded mb-2" />
+          <img src="/images/placeholders/activity-dive.jpg" alt="Diving" className="w-full h-40 object-cover rounded mb-2" />
           Diving — <a href="#">WhatsApp</a>
         </div>
       </div>
